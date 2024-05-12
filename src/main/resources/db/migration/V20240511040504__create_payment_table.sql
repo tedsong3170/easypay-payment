@@ -1,7 +1,7 @@
 -- 테이블 생성 SQL - merchant_info
 CREATE TABLE merchant_info
 (
-  mid               uuid           NOT NULL,
+  mid               char(32)           NOT NULL,
   name             varchar(50)    NOT NULL,
   ceo_name           varchar(50)    NOT NULL,
   biz_type           varchar(50)    NOT NULL,
@@ -63,8 +63,8 @@ COMMENT ON COLUMN merchant_info.update_by IS '수정자';
 -- 테이블 생성 SQL - merchant_customer_info
 CREATE TABLE merchant_customer_info
 (
-  di             uuid            NOT NULL,
-  mid            uuid            NOT NULL,
+  di             char(32)            NOT NULL,
+  mid            char(32)            NOT NULL,
   ci             char(88)        NOT NULL,
   email          varchar(100)    NOT NULL,
   phone_number    varchar(50)     NOT NULL,
@@ -105,7 +105,7 @@ COMMENT ON COLUMN merchant_customer_info.update_at IS '수정일';
 -- 테이블 생성 SQL - payment_info
 CREATE TABLE payment_info
 (
-  payment_id           uuid              NOT NULL,
+  payment_id           char(32)              NOT NULL,
   di                  varchar(50)       NOT NULL,
   mid                 varchar(50)       NOT NULL,
   type                varchar(50)       NOT NULL,
@@ -179,8 +179,8 @@ COMMENT ON COLUMN payment_info.update_at IS '수정일';
 -- 테이블 생성 SQL - payment_ledger
 CREATE TABLE payment_ledger
 (
-  ledger_id        uuid              NOT NULL,
-  payment_id       uuid              NOT NULL,
+  ledger_id        char(32)              NOT NULL,
+  payment_id       char(32)              NOT NULL,
   method          varchar(50)       NOT NULL,
   method_id        varchar(50)       NOT NULL,
   token           char(32)          NOT NULL,
@@ -229,9 +229,9 @@ COMMENT ON COLUMN payment_ledger.create_at IS '등록일';
 -- 테이블 생성 SQL - payment_cancel_ledger
 CREATE TABLE payment_cancel_ledger
 (
-  ledger_id          uuid              NOT NULL,
-  payment_id         uuid              NOT NULL,
-  origin_ledger_id    uuid              NOT NULL,
+  ledger_id          char(32)              NOT NULL,
+  payment_id         char(32)              NOT NULL,
+  origin_ledger_id    char(32)              NOT NULL,
   amount            numeric(18, 0)    NOT NULL,
   status            varchar(50)       NOT NULL,
   error_code         char(5)           NULL,
