@@ -30,11 +30,16 @@ extra["snippetsDir"] = file("build/generated-snippets")
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
   implementation("org.springframework.boot:spring-boot-starter-security")
+  implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.flywaydb:flyway-core")
 
   implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
   implementation("org.springdoc:springdoc-openapi-webmvc-core:1.6.11")
+
+  implementation("com.fasterxml.jackson.core:jackson-databind")
+  implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+  implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.2")
 
   compileOnly("org.projectlombok:lombok")
   runtimeOnly("com.h2database:h2")
