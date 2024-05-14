@@ -11,6 +11,7 @@ import song.pg.payment.method.findAll.v1.proto.MethodFindAllV1;
 import song.pg.payment.method.findAll.v1.proto.PaymentMethodFindAllServiceGrpc;
 import song.pg.payment.models.common.CommonResponse;
 import song.pg.payment.models.customer.CustomerEntity;
+import song.pg.payment.models.customer.CustomerVo;
 import song.pg.payment.models.payment.method.PaymentMethodType;
 import song.pg.payment.models.payment.method.ResponsePaymentMethod;
 import song.pg.payment.models.payment.ready.PaymentInfoEntity;
@@ -83,7 +84,7 @@ public class PaymentServiceImpl implements PaymentService
       new ResponsePaymentReady(
         paymentInfo.getPaymentId(),
         paymentInfo.getDi(),
-        jwtUtil.generate(),
+        jwtUtil.generate(new CustomerVo(customer)),
         paymentMethodFindAllResponse.getPaymentMethodList().stream().map(data -> {
           PaymentMethodType method = null;
 

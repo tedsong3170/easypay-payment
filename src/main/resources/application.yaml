@@ -27,7 +27,8 @@ logging:
     song.pg.payment: debug
 
 jwt:
-  secret: song
+  secret: 71d701de96d24d69a338eb7e963e2a80
+
 
 grpc:
   client:
