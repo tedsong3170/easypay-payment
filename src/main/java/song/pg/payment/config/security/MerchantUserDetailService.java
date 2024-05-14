@@ -1,17 +1,14 @@
-package song.pg.payment.api.security;
+package song.pg.payment.config.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import song.pg.payment.models.merchant.MerchantInfoEntity;
+import song.pg.payment.models.merchant.MerchantInfoVo;
 import song.pg.payment.repository.MerchantInfoRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -32,6 +29,6 @@ public class MerchantUserDetailService implements UserDetailsService {
       throw new UsernameNotFoundException("User not found");
     }
 
-    return new User(entity.get().getMid(), entity.get().getSecretKey(), List.of());
+    return new MerchantUserDetails(new MerchantInfoVo(entity.get()));
   }
 }

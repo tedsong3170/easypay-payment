@@ -1,4 +1,4 @@
-package song.pg.payment.api.security;
+package song.pg.payment.config.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -28,7 +28,7 @@ public class MerchantAuthenticationProvider implements AuthenticationProvider {
     UserDetails userDetails = merchantUserDetailService.loadUserByUsername(mid);
 
     if (userDetails.getPassword().equals(secretKey)) {
-      return new UsernamePasswordAuthenticationToken(mid, secretKey, userDetails.getAuthorities());
+      return new UsernamePasswordAuthenticationToken(userDetails, secretKey, userDetails.getAuthorities());
     }
     else
     {
