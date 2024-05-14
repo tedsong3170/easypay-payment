@@ -63,12 +63,10 @@ COMMENT ON COLUMN merchant_info.update_by IS '수정자';
 -- 테이블 생성 SQL - merchant_customer_info
 CREATE TABLE merchant_customer_info
 (
-  di             char(32)            NOT NULL,
+  di             char(64)            NOT NULL,
   mid            char(32)            NOT NULL,
   ci             char(88)        NOT NULL,
-  email          varchar(100)    NOT NULL,
-  phone_number    varchar(50)     NOT NULL,
-  name           varchar(50)     NOT NULL,
+  email          varchar(100)    NULL,
   create_at       timestamp       NOT NULL,
   update_at       timestamp       NOT NULL,
   PRIMARY KEY (di)
@@ -89,12 +87,6 @@ COMMENT ON COLUMN merchant_customer_info.ci IS '사용자CI';
 -- 컬럼 Comment 설정 SQL - merchant_customer_info.email
 COMMENT ON COLUMN merchant_customer_info.email IS '이메일주소';
 
--- 컬럼 Comment 설정 SQL - merchant_customer_info.phone_number
-COMMENT ON COLUMN merchant_customer_info.phone_number IS '연락처';
-
--- 컬럼 Comment 설정 SQL - merchant_customer_info.name
-COMMENT ON COLUMN merchant_customer_info.name IS '성명';
-
 -- 컬럼 Comment 설정 SQL - merchant_customer_info.create_at
 COMMENT ON COLUMN merchant_customer_info.create_at IS '등록일';
 
@@ -106,16 +98,16 @@ COMMENT ON COLUMN merchant_customer_info.update_at IS '수정일';
 CREATE TABLE payment_info
 (
   payment_id           char(32)              NOT NULL,
-  di                  varchar(50)       NOT NULL,
+  di                 char(64)      NOT NULL,
   mid                 varchar(50)       NOT NULL,
-  type                varchar(50)       NOT NULL,
+  type                varchar(50)       NULL,
   order_id             varchar(50)       NOT NULL,
   order_name           varchar(50)       NOT NULL,
   total_amount         numeric(18, 0)    NOT NULL,
   balance             numeric(18, 0)    NOT NULL,
   status              varchar(50)       NOT NULL,
   installment_month    integer           NULL,
-  requested_at         timestamp         NOT NULL,
+  requested_at         timestamp         NULL,
   approved_at          timestamp         NULL,
   error_code           char(5)           NULL,
   error_message        varchar(50)       NULL,

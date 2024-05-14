@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package song.pg.proto;
+
+message Request{
+  string cardNumber1 = 1;
+  string cardNumber2 = 2;
+  string cardNumber3 = 3;
+  string cardNumber4 = 4;
+  int32 expireYear = 5;
+  int32 expireMonth = 6;
+  string cvc = 7;
+  string password = 8;
+  string cardHolderName = 9;
+  string nickName = 10;
+}
+
+message Response{
+  string code = 1;
+  string message = 2;
+  string id = 3;
+  string nickName = 4;
+}
+
+service PaymentMethodService{
+  rpc getOne(Request) returns (Response) {}
+}
