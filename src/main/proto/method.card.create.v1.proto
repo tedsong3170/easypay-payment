@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package song.pg.proto;
+package song.pg.payment.method.create.v1.proto;
 
 message Request{
   string cardNumber1 = 1;
@@ -22,6 +22,6 @@ message Response{
   string nickName = 4;
 }
 
-service PaymentMethodService{
+service PaymentMethodCreateService{
   rpc getOne(Request) returns (Response) {}
 }

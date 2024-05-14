@@ -20,6 +20,7 @@ spring:
     consumer:
       group-id: song-group
       auto-offset-reset: earliest
+
 logging:
   level:
     root: info
@@ -27,3 +28,9 @@ logging:
 
 jwt:
   secret: song
+
+grpc:
+  client:
+    token:
+      address: static://127.0.0.1:50051
+      negotiation-type: plaintext

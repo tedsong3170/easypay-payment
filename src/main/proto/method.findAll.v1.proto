@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package song.pg.payment.method.findAll.v1.proto;
+
+message Request {
+  string di = 1;
+}
+
+message Response {
+  string code = 1;
+  string message = 2;
+  repeated PaymentMethod PaymentMethod = 3;
+}
+
+message PaymentMethod {
+  string id = 1;
+  string nickName = 2;
+  string method = 3;
+}
+
+service PaymentMethodFindAllService {
+  rpc FindAllPaymentMethod(Request) returns (Response);
+}
