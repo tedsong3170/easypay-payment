@@ -8,20 +8,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import song.pg.payment.api.security.MerchantAuthenticationProvider;
-import song.pg.payment.api.security.MerchantUserDetailService;
+import song.pg.payment.config.security.MerchantAuthenticationProvider;
 
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig
 {
-
-
-  private final MerchantUserDetailService merchantUserDetailService;
   private final MerchantAuthenticationProvider merchantAuthenticationProvider;
 
-  public WebSecurityConfig(MerchantUserDetailService merchantUserDetailService,  MerchantAuthenticationProvider merchantAuthenticationProvider) {
-    this.merchantUserDetailService = merchantUserDetailService;
+  public WebSecurityConfig(MerchantAuthenticationProvider merchantAuthenticationProvider) {
     this.merchantAuthenticationProvider = merchantAuthenticationProvider;
   }
 
