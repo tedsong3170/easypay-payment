@@ -2,11 +2,13 @@ package song.pg.payment.config.security;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import song.pg.payment.models.merchant.MerchantInfoVo;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 public class MerchantUserDetails implements UserDetails, Serializable
@@ -22,7 +24,7 @@ public class MerchantUserDetails implements UserDetails, Serializable
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities()
   {
-    return null;
+    return List.of(new SimpleGrantedAuthority("BASIC"));
   }
 
   @Override
