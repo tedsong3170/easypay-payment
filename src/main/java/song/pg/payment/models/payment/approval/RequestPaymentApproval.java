@@ -27,11 +27,13 @@ public class RequestPaymentApproval implements Serializable
   private Integer installmentMonth;
 
   private String paymentToken;
+  private String approvalUrl;
 
   public RequestPaymentApproval(
     final RequestPaymentRequest request,
     final String paymentLedgerId,
-    final String paymentToken
+    final String paymentToken,
+    final String approvalUrl
   )
   {
     this.paymentId = request.getPaymentId();
@@ -43,5 +45,6 @@ public class RequestPaymentApproval implements Serializable
     this.installmentMonth = request.getInstallmentMonth();
     this.paymentToken = paymentToken;
     this.paymentLedgerId = paymentLedgerId;
+    this.approvalUrl = approvalUrl;
   }
 }

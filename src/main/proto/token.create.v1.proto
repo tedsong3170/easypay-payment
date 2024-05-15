@@ -14,6 +14,7 @@ message Response {
   string code = 1;
   string message = 2;
   string token = 3;
+  string approvalUrl = 4;
 }
 
 service TokenCreate {

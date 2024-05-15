@@ -188,7 +188,8 @@ public class PaymentServiceImpl implements PaymentService
     RequestPaymentApproval requestPaymentApproval = new RequestPaymentApproval(
       requestPaymentReady,
       paymentLedger.getLedgerId(),
-      tokenCreateResponse.getToken()
+      tokenCreateResponse.getToken(),
+      tokenCreateResponse.getApprovalUrl()
     );
 
     kafkaTemplate.send("paymentApprovalRequest", JsonUtil.toJson(requestPaymentApproval));
@@ -215,7 +216,7 @@ public class PaymentServiceImpl implements PaymentService
     RestClient restClient = RestClient.create();
 
     ResponseEntity<ResponsePaymentApproval> response = restClient.post()
-      .uri("http://localhost:8082/api/approval/v1")
+      .uri(requestPaymentApproval.getApprovalUrl())
       .body(requestPaymentApproval)
       .retrieve()
       .toEntity(ResponsePaymentApproval.class);
