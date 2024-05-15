@@ -1,4 +1,4 @@
-package song.pg.payment.models.payment.ready;
+package song.pg.payment.models.payment;
 
 public enum PaymentType
 {

@@ -109,6 +109,7 @@ CREATE TABLE payment_info
   installment_month    integer           NULL,
   requested_at         timestamp         NULL,
   approved_at          timestamp         NULL,
+  callback_url         varchar(300)      NULL,
   error_code           char(5)           NULL,
   error_message        varchar(50)       NULL,
   create_at            timestamp         NOT NULL,
@@ -167,6 +168,9 @@ COMMENT ON COLUMN payment_info.create_at IS '등록일';
 -- 컬럼 Comment 설정 SQL - payment_info.update_at
 COMMENT ON COLUMN payment_info.update_at IS '수정일';
 
+-- 컬럼 Comment 설정 SQL - payment_info.callback_url
+COMMENT ON COLUMN payment_info.callback_url IS '결제결과콜백URL';
+
 
 -- 테이블 생성 SQL - payment_ledger
 CREATE TABLE payment_ledger
@@ -174,11 +178,11 @@ CREATE TABLE payment_ledger
   ledger_id        char(32)              NOT NULL,
   payment_id       char(32)              NOT NULL,
   method          varchar(50)       NOT NULL,
-  method_id        varchar(50)       NOT NULL,
-  token           char(32)          NOT NULL,
+  method_id        char(32)       NOT NULL,
+  token           varchar(300)          NOT NULL,
   amount          numeric(18, 0)    NOT NULL,
   status          varchar(50)       NOT NULL,
-  error_code       char(5)           NULL,
+  error_code       varchar(50)           NULL,
   error_message    varchar(50)       NULL,
   create_at        timestamp         NOT NULL,
   PRIMARY KEY (ledger_id)
@@ -226,7 +230,7 @@ CREATE TABLE payment_cancel_ledger
   origin_ledger_id    char(32)              NOT NULL,
   amount            numeric(18, 0)    NOT NULL,
   status            varchar(50)       NOT NULL,
-  error_code         char(5)           NULL,
+  error_code         varchar(50)          NULL,
   error_message      varchar(50)       NULL,
   create_at          timestamp         NOT NULL,
   PRIMARY KEY (ledger_id)

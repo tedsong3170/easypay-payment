@@ -190,18 +190,24 @@ public class PaymentDocsTest
                 headerWithName("Authorization").description("Bearer AccessToken")
               )
               .requestFields(
+                fieldWithPath("paymentId").description("결제ID").type(STRING),
                 fieldWithPath("mid").description("가맹점ID").type(STRING),
                 fieldWithPath("amount").description("결제금액").type(NUMBER),
                 fieldWithPath("taxFreeAmount").description("비과세금액").type(NUMBER),
                 fieldWithPath("orderId").description("주문번호").type(STRING),
                 fieldWithPath("orderName").description("구매상품명").type(STRING),
                 fieldWithPath("paymentMethodId").description("결제수단ID").type(STRING),
-                fieldWithPath("installmentMonth").description("할부개월수").type(STRING).optional(),
+                fieldWithPath("installmentMonth").description("할부개월수").type(NUMBER).optional(),
                 fieldWithPath("callbackUrl").description("콜백URL").type(STRING)
               )
               .responseFields(
                 fieldWithPath("code").description("응답코드").type(STRING),
-                fieldWithPath("message").description("응답메세지").type(STRING)
+                fieldWithPath("message").description("응답메세지").type(STRING),
+                fieldWithPath("data").description("응답결과").type(OBJECT),
+                fieldWithPath("data.paymentId").description("결제ID").type(STRING),
+                fieldWithPath("data.customerDi").description("사용자DI").type(STRING),
+                fieldWithPath("data.paymentMethodId").description("결제수단ID").type(STRING),
+                fieldWithPath("data.callbackUrl").description("콜백URL").type(STRING)
               )
               .build()
           )

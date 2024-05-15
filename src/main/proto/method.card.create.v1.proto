@@ -21,7 +21,7 @@ message Request {
   CardInfo cardInfo = 3;
 }
 
-message Response{
+message Response {
   string code = 1;
   string message = 2;
   string id = 3;

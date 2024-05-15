@@ -1,4 +1,4 @@
-package song.pg.payment.models.payment.ready;
+package song.pg.payment.models.payment;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import song.pg.payment.models.payment.ready.RequestPaymentReady;
 import song.pg.payment.utils.UUIDGenerator;
 
 import java.math.BigDecimal;
@@ -77,6 +78,9 @@ public class PaymentInfoEntity
   // 에러메세지
   @Column(name="error_message")
   private String errorMessage;
+
+  @Column(name="callback_url")
+  private String callbackUrl;
 
   // 등록일
   @Column(name="create_at", nullable = false)
