@@ -2,10 +2,10 @@
 
 ## 1. ERD
 ## 1.1 결제시스템
-![결제시스템_ERD.png](%EA%B2%B0%EC%A0%9C%EC%8B%9C%EC%8A%A4%ED%85%9C_ERD.png)
+![결제ERD.jpg](%EA%B2%B0%EC%A0%9CERD.jpg)
 
 ## 1.2 토큰시스템
-![토큰시스템_ERD.png](%ED%86%A0%ED%81%B0%EC%8B%9C%EC%8A%A4%ED%85%9C_ERD.png)
+![토큰ERD.jpg](%ED%86%A0%ED%81%B0ERD.jpg)
 
 
 ## 2. 기동방법
