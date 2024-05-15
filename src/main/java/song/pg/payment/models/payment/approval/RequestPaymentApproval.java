@@ -18,6 +18,7 @@ public class RequestPaymentApproval implements Serializable
   private static final long serialVersionUID = -671106201416150628L;
 
   private String paymentId;
+  private String paymentLedgerId;
   private String mid;
   private BigDecimal amount;
   private BigDecimal taxFreeAmount;
@@ -29,6 +30,7 @@ public class RequestPaymentApproval implements Serializable
 
   public RequestPaymentApproval(
     final RequestPaymentRequest request,
+    final String paymentLedgerId,
     final String paymentToken
   )
   {
@@ -40,5 +42,6 @@ public class RequestPaymentApproval implements Serializable
     this.orderName = request.getOrderName();
     this.installmentMonth = request.getInstallmentMonth();
     this.paymentToken = paymentToken;
+    this.paymentLedgerId = paymentLedgerId;
   }
 }

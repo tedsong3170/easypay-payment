@@ -41,6 +41,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService
             .setExpireMonth(requestPaymentMethodCardRegister.getExpireMonth())
             .setExpireYear(requestPaymentMethodCardRegister.getExpireYear())
             .setCvc(requestPaymentMethodCardRegister.getCvc())
+            .setPassword(requestPaymentMethodCardRegister.getPassword())
             .setNickName(requestPaymentMethodCardRegister.getNickName())
             .build()
         )

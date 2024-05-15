@@ -51,6 +51,10 @@ public class PaymentLedgerEntity
   @Column(name="status", nullable = false)
   private String status;
 
+  // 결제승인코드
+  @Column(name="approval_code", columnDefinition = "char")
+  private String approvalCode;
+
   // 에러코드
   @Column(name="error_code")
   private String errorCode;

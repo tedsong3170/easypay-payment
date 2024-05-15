@@ -4,9 +4,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import song.pg.payment.api.payment.PaymentService;
 import song.pg.payment.method.findAll.v1.proto.MethodFindAllV1;
 import song.pg.payment.method.findAll.v1.proto.PaymentMethodFindAllServiceGrpc;
@@ -164,11 +167,6 @@ public class PaymentServiceImpl implements PaymentService
 
     log.debug("grpc response : {}", tokenCreateResponse.toString());
 
-    RequestPaymentApproval requestPaymentApproval = new RequestPaymentApproval(
-      requestPaymentReady,
-      tokenCreateResponse.getToken()
-    );
-
     paymentInfo.setRequestedAt(LocalDateTime.now());
     paymentInfo.setType(EASY_PAYMENT);
     paymentInfo.setStatus(PAYMENT_STATUS_REQUEST);
@@ -186,6 +184,12 @@ public class PaymentServiceImpl implements PaymentService
 
     paymentLedgerRepository.save(paymentLedger);
 
+    RequestPaymentApproval requestPaymentApproval = new RequestPaymentApproval(
+      requestPaymentReady,
+      paymentLedger.getLedgerId(),
+      tokenCreateResponse.getToken()
+    );
+
     kafkaTemplate.send("paymentApprovalRequest", JsonUtil.toJson(requestPaymentApproval));
 
     return new CommonResponse<>(
@@ -202,11 +206,60 @@ public class PaymentServiceImpl implements PaymentService
 
   @Override
   @KafkaListener(topics = "paymentApprovalRequest")
+  @Transactional
   public void approvePaymentRequest(String request)
   {
     RequestPaymentApproval requestPaymentApproval = (RequestPaymentApproval) JsonUtil.fromJson(request, RequestPaymentApproval.class);
 
-    log.debug("kafka message : {}", requestPaymentApproval.toString());
+    RestClient restClient = RestClient.create();
+
+    ResponseEntity<String> response = restClient.post()
+      .uri("http://localhost:8082/api/approval/v1")
+      .body(requestPaymentApproval)
+      .retrieve()
+      .toEntity(String.class);
+
+    log.debug("승인 결과 : {}", response);
+
+    if (response.getStatusCode() == HttpStatusCode.valueOf(200)
+      && !response.getBody().isBlank()
+    )
+    {
+      PaymentInfoEntity paymentInfoEntity = paymentInfoRepository.findById(requestPaymentApproval.getPaymentId())
+        .orElseThrow(() -> new KnownException(ExceptionEnum.NOT_EXIST_PAYMENT));
+
+      paymentInfoEntity.setStatus("APPROVED");
+      paymentInfoEntity.setApprovedAt(LocalDateTime.now());
+      paymentInfoEntity.setBalance(requestPaymentApproval.getAmount());
+      paymentInfoEntity.setUpdateAt(LocalDateTime.now());
+
+      paymentInfoRepository.save(paymentInfoEntity);
+
+      PaymentLedgerEntity paymentLedgerEntity = paymentLedgerRepository.findById(requestPaymentApproval.getPaymentLedgerId())
+        .orElseThrow(() -> new KnownException(ExceptionEnum.NOT_EXIST_PAYMENT_LEDGER));
+
+      paymentLedgerEntity.setStatus("APPROVED");
+      paymentLedgerEntity.setApprovalCode(response.getBody());
+
+      paymentLedgerRepository.save(paymentLedgerEntity);
+    }
+    else {
+      PaymentInfoEntity paymentInfoEntity = paymentInfoRepository.findById(requestPaymentApproval.getPaymentId())
+        .orElseThrow(() -> new KnownException(ExceptionEnum.NOT_EXIST_PAYMENT));
+
+      paymentInfoEntity.setStatus("REJECTED");
+      paymentInfoEntity.setUpdateAt(LocalDateTime.now());
+
+      paymentInfoRepository.save(paymentInfoEntity);
+
+      PaymentLedgerEntity paymentLedgerEntity = paymentLedgerRepository.findById(requestPaymentApproval.getPaymentLedgerId())
+        .orElseThrow(() -> new KnownException(ExceptionEnum.NOT_EXIST_PAYMENT_LEDGER));
+
+      paymentLedgerEntity.setStatus("REJECTED");
+
+      paymentLedgerRepository.save(paymentLedgerEntity);
+    }
+    //Callback 호출로직 추가
 
   }
 }

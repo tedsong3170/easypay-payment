@@ -182,6 +182,7 @@ CREATE TABLE payment_ledger
   token           varchar(300)          NOT NULL,
   amount          numeric(18, 0)    NOT NULL,
   status          varchar(50)       NOT NULL,
+  approval_code    varchar(100)       NULL,
   error_code       varchar(50)           NULL,
   error_message    varchar(50)       NULL,
   create_at        timestamp         NOT NULL,
@@ -211,6 +212,9 @@ COMMENT ON COLUMN payment_ledger.amount IS '결제금액';
 
 -- 컬럼 Comment 설정 SQL - payment_ledger.status
 COMMENT ON COLUMN payment_ledger.status IS '결제상태. 요청, 승인, 거부 등';
+
+-- 컬럼 Comment 설정 SQL - payment_ledger.approval_code
+COMMENT ON COLUMN payment_ledger.approval_code IS '승인코드';
 
 -- 컬럼 Comment 설정 SQL - payment_ledger.error_code
 COMMENT ON COLUMN payment_ledger.error_code IS '에러코드';

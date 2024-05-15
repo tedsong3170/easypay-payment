@@ -20,6 +20,8 @@ public enum ExceptionEnum
 
   INVALID_PAYMENT_REQUEST(400, "1011", "유효하지 않은 결제 요청입니다."),
 
+  NOT_EXIST_PAYMENT_LEDGER(400, "1012", "존재하지 않는 결제원장입니다."),
+
   ;
 
   private final int status;

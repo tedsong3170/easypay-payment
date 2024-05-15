@@ -1,6 +1,7 @@
 package song.pg.payment.api.payment;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,14 +17,10 @@ import song.pg.payment.models.payment.request.ResponsePaymentRequest;
 @RestController
 @RequestMapping("/api/payment")
 @Slf4j
+@RequiredArgsConstructor
 public class PaymentController
 {
   private final PaymentService paymentService;
-
-  public PaymentController(PaymentService paymentService)
-  {
-    this.paymentService = paymentService;
-  }
 
   @PostMapping("/ready/v1")
   public ResponseEntity<CommonResponse<ResponsePaymentReady>> readyPayment(
