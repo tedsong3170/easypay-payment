@@ -18,6 +18,7 @@ import song.pg.payment.models.customer.CustomerEntity;
 import song.pg.payment.models.customer.CustomerVo;
 import song.pg.payment.models.payment.PaymentInfoEntity;
 import song.pg.payment.models.payment.approval.RequestPaymentApproval;
+import song.pg.payment.models.payment.approval.ResponsePaymentApproval;
 import song.pg.payment.models.payment.ledger.PaymentLedgerEntity;
 import song.pg.payment.models.payment.method.PaymentMethodType;
 import song.pg.payment.models.payment.method.ResponsePaymentMethod;
@@ -213,16 +214,16 @@ public class PaymentServiceImpl implements PaymentService
 
     RestClient restClient = RestClient.create();
 
-    ResponseEntity<String> response = restClient.post()
+    ResponseEntity<ResponsePaymentApproval> response = restClient.post()
       .uri("http://localhost:8082/api/approval/v1")
       .body(requestPaymentApproval)
       .retrieve()
-      .toEntity(String.class);
+      .toEntity(ResponsePaymentApproval.class);
 
     log.debug("승인 결과 : {}", response);
 
     if (response.getStatusCode() == HttpStatusCode.valueOf(200)
-      && !response.getBody().isBlank()
+      && response.getBody().getCode().equals("200")
     )
     {
       PaymentInfoEntity paymentInfoEntity = paymentInfoRepository.findById(requestPaymentApproval.getPaymentId())
@@ -239,7 +240,7 @@ public class PaymentServiceImpl implements PaymentService
         .orElseThrow(() -> new KnownException(ExceptionEnum.NOT_EXIST_PAYMENT_LEDGER));
 
       paymentLedgerEntity.setStatus("APPROVED");
-      paymentLedgerEntity.setApprovalCode(response.getBody());
+      paymentLedgerEntity.setApprovalCode(response.getBody().getData());
 
       paymentLedgerRepository.save(paymentLedgerEntity);
     }
@@ -248,6 +249,8 @@ public class PaymentServiceImpl implements PaymentService
         .orElseThrow(() -> new KnownException(ExceptionEnum.NOT_EXIST_PAYMENT));
 
       paymentInfoEntity.setStatus("REJECTED");
+      paymentInfoEntity.setErrorCode(response.getBody().getCode());
+      paymentInfoEntity.setErrorMessage(response.getBody().getMessage());
       paymentInfoEntity.setUpdateAt(LocalDateTime.now());
 
       paymentInfoRepository.save(paymentInfoEntity);
@@ -256,6 +259,8 @@ public class PaymentServiceImpl implements PaymentService
         .orElseThrow(() -> new KnownException(ExceptionEnum.NOT_EXIST_PAYMENT_LEDGER));
 
       paymentLedgerEntity.setStatus("REJECTED");
+      paymentLedgerEntity.setErrorCode(response.getBody().getCode());
+      paymentLedgerEntity.setErrorMessage(response.getBody().getMessage());
 
       paymentLedgerRepository.save(paymentLedgerEntity);
     }
