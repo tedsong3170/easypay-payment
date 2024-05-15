@@ -1,4 +1,4 @@
-package song.pg.payment.api.payment.impl;
+package song.pg.payment.payment.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import song.pg.payment.api.payment.PaymentService;
 import song.pg.payment.method.findAll.v1.proto.MethodFindAllV1;
 import song.pg.payment.method.findAll.v1.proto.PaymentMethodFindAllServiceGrpc;
 import song.pg.payment.models.common.CommonResponse;
@@ -26,6 +25,7 @@ import song.pg.payment.models.payment.ready.RequestPaymentReady;
 import song.pg.payment.models.payment.ready.ResponsePaymentReady;
 import song.pg.payment.models.payment.request.RequestPaymentRequest;
 import song.pg.payment.models.payment.request.ResponsePaymentRequest;
+import song.pg.payment.payment.PaymentService;
 import song.pg.payment.repository.CustomerRepository;
 import song.pg.payment.repository.PaymentInfoRepository;
 import song.pg.payment.repository.PaymentLedgerRepository;

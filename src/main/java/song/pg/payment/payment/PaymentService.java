@@ -1,4 +1,4 @@
-package song.pg.payment.api.payment;
+package song.pg.payment.payment;
 
 import song.pg.payment.models.common.CommonResponse;
 import song.pg.payment.models.payment.ready.RequestPaymentReady;

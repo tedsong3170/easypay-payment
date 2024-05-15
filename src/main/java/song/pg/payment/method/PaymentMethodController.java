@@ -1,4 +1,4 @@
-package song.pg.payment.api.method;
+package song.pg.payment.method;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import song.pg.payment.models.payment.method.card.RequestPaymentMethodCardRegist
 @RequiredArgsConstructor
 public class PaymentMethodController {
 
-  private final PaymentMethodService paymentMethodService;
+  private final song.pg.payment.api.method.PaymentMethodService paymentMethodService;
   @PostMapping("/card/v1")
   public ResponseEntity<CommonResponse<ResponsePaymentMethod>> registerCardInfo(
     @RequestBody @Valid RequestPaymentMethodCardRegister requestPaymentMethodCardRegister

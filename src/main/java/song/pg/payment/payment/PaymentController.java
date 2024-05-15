@@ -1,4 +1,4 @@
-package song.pg.payment.api.payment;
+package song.pg.payment.payment;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
