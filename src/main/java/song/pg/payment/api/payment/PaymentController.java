@@ -28,14 +28,9 @@ public class PaymentController
     @RequestBody @Valid final RequestPaymentReady requestPaymentReady
   )
   {
-    log.debug("결제 준비 요청");
-    log.debug("결제 준비 요청 사용자: {}", ci);
-    log.debug("결제 준비 요청 바디: {}", requestPaymentReady.toString());
+    log.info("결제 준비 요청");
 
     MerchantUserDetails user = (MerchantUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-    log.debug("결제 준비 요청 가맹점ID: {}", user.getUsername());
-    log.debug("결제 준비 요청 가맹점시크릿키: {}", user.getPassword());
 
     return ResponseEntity.ok()
       .body(paymentService.readyPayment(ci, requestPaymentReady)
@@ -47,12 +42,9 @@ public class PaymentController
     @RequestBody @Valid final RequestPaymentRequest requestPaymentRequest
   )
   {
-    log.debug("결제 요청");
-    log.debug("결제 요청 바디: {}", requestPaymentRequest.toString());
+    log.info("결제 요청");
 
     CustomerUserDetails user = (CustomerUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-    log.debug("결제 준비 요청 사용자 DI: {}", user.getUsername());
 
     return ResponseEntity.ok()
       .body(paymentService.requestPayment(

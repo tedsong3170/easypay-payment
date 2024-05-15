@@ -7,6 +7,5 @@ import song.pg.payment.models.customer.CustomerEntity;
 @Repository
 public interface CustomerRepository extends JpaRepository<CustomerEntity, String>
 {
-//  Optional<CustomerEntity> findByCiAndMid(final String ci, final String mid);
   CustomerEntity findByCiAndMid(final String ci, final String mid);
 }
