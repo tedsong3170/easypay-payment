@@ -17,6 +17,8 @@ CREATE TABLE merchant_info
   PRIMARY KEY (mid)
 );
 
+create index idx_merchant_info_biz_number on merchant_info(biz_number);
+
 -- 테이블 Comment 설정 SQL - merchant_info
 COMMENT ON TABLE merchant_info IS '가맹점_정보';
 
@@ -69,8 +71,12 @@ CREATE TABLE merchant_customer_info
   email          varchar(100)    NULL,
   create_at       timestamp       NOT NULL,
   update_at       timestamp       NOT NULL,
-  PRIMARY KEY (di)
+  PRIMARY KEY (di),
+  constraint uk_merchant_customer_info_mid_ci unique(mid, ci)
 );
+
+create index idx_merchant_customer_info_mid on merchant_customer_info(mid);
+create index idx_merchant_customer_info_ci on merchant_customer_info(ci);
 
 -- 테이블 Comment 설정 SQL - merchant_customer_info
 COMMENT ON TABLE merchant_customer_info IS '가맹점_사용자정보';
@@ -116,6 +122,9 @@ CREATE TABLE payment_info
   update_at            timestamp         NOT NULL,
   PRIMARY KEY (payment_id)
 );
+
+create index idx_payment_info_di on payment_info(di);
+create index idx_payment_info_order_id on payment_info(order_id);
 
 -- 테이블 Comment 설정 SQL - payment_info
 COMMENT ON TABLE payment_info IS '결제정보';
@@ -188,6 +197,8 @@ CREATE TABLE payment_ledger
   create_at        timestamp         NOT NULL,
   PRIMARY KEY (ledger_id)
 );
+create index idx_payment_ledger_payment_id on payment_ledger(payment_id);
+create index idx_payment_ledger_method_id on payment_ledger(method_id);
 
 -- 테이블 Comment 설정 SQL - payment_ledger
 COMMENT ON TABLE payment_ledger IS '결제원장';
@@ -239,6 +250,9 @@ CREATE TABLE payment_cancel_ledger
   create_at          timestamp         NOT NULL,
   PRIMARY KEY (ledger_id)
 );
+
+create index idx_payment_cancel_ledger_payment_id on payment_cancel_ledger(payment_id);
+create index idx_payment_cancel_ledger_origin_ledger_id on payment_cancel_ledger(origin_ledger_id);
 
 -- 테이블 Comment 설정 SQL - payment_cancel_ledger
 COMMENT ON TABLE payment_cancel_ledger IS '결제취소원장';
