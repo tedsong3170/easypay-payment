@@ -100,8 +100,8 @@ tasks.asciidoctor {
 
 openapi3 {
   this.setServer("http://localhost:8080")
-  this.title = "Post Service API"
-  this.description = "Post Service API description"
+  this.title = "테스트PG 결제시스템 API"
+  this.description = "테스트 PG 결제시스템 API 명세서"
   this.version = "1.0.0"
   this.format = "yaml"
 }

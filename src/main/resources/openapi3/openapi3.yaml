@@ -1,0 +1,380 @@
+openapi: 3.0.1
+info:
+  title: 테스트PG 결제시스템 API
+  description: 테스트 PG 결제시스템 API 명세서
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+tags: []
+paths:
+  /api/payment/ready/v1:
+    post:
+      tags:
+      - api
+      summary: 결제준비 요청
+      description: 결제준비 요청
+      operationId: payment/ready
+      parameters:
+      - name: Authorization
+        in: header
+        description: Basic Base64(가맹점ID:가맹점시크릿키)
+        required: true
+        schema:
+          type: string
+        example: Basic YWJjZDoxMjM0
+      - name: X-CUSTOMER-ID
+        in: header
+        description: 사용자CI
+        required: true
+        schema:
+          type: string
+        example: wEi9oYSuekQGxT9MV4rKHG4CO+Zrp+onhLIIuembI8jx/0PLF5Ne3oMBxvUFlN4UmsgjeNErZfmpCVUFHsv8nq==
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api-payment-ready-v11082296313'
+            examples:
+              payment/ready:
+                value: |
+                  {
+                    "mid": "7210c942fb534cacaa2553446da1d7ea",
+                    "amount": 1000000,
+                    "taxFreeAmount": 0,
+                    "orderId": "testOrder20240513_1",
+                    "orderName": "아이폰15 Pro Max 512GB"
+                  }
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-payment-ready-v11035276510'
+              examples:
+                payment/ready:
+                  value: "{\"code\":\"200\",\"message\":\"성공\",\"data\":{\"paymentId\"\
+                    :\"03e9cb9bbc6b4f9ebacebb835a273580\",\"customerDi\":\"3ed70a83292af51f87106ceca85eaaa2d8812f92a1c3e93166b3d52758da4431\"\
+                    ,\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJkaSI6IjNlZDcwYTgzMjkyYWY1MWY4NzEwNmNlY2E4NWVhYWEyZDg4MTJmOTJhMWMzZTkzMTY2YjNkNTI3NThkYTQ0MzEiLCJtaWQiOiI3MjEwYzk0MmZiNTM0Y2FjYWEyNTUzNDQ2ZGExZDdlYSIsImlhdCI6MTcxNTc2NDcxMCwiZXhwIjoxNzE1NzY1MDEwfQ.cYB2tBy2R6M6RT6Zqfz-C2J0_rzU3npacsVOGoasBsE\"\
+                    ,\"paymentMethod\":[{\"id\":\"fe4df140f30b4605bfea7b9d912a16cd\"\
+                    ,\"method\":\"CARD\",\"nickName\":\"홍길동카드\"}]}}"
+      security:
+      - basic: []
+  /api/payment/method/card/v1:
+    post:
+      tags:
+      - api
+      summary: 카드 정보 등록
+      description: 카드 정보 등록
+      operationId: payment/method/card/create
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer AccessToken
+        required: true
+        schema:
+          type: string
+        example: Bearer YWJjZDoxMjM0
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api-payment-method-card-v1-436592092'
+            examples:
+              payment/method/card/create:
+                value: |
+                  {
+                    "cardNumber1": "1234",
+                    "cardNumber2": "1234",
+                    "cardNumber3": "xE7Da6cUvZs5AniHgfANBg==",
+                    "cardNumber4": "xE7Da6cUvZs5AniHgfANBg==",
+                    "expireYear": 2023,
+                    "expireMonth": 12,
+                    "cvc": 123,
+                    "password": 12,
+                    "cardHolderName": "홍길동",
+                    "nickName": "홍길동카드"
+                  }
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-payment-method-card-v11628057811'
+              examples:
+                payment/method/card/create:
+                  value: "{\"code\":\"200\",\"message\":\"성공\",\"data\":{\"id\":\"\
+                    b3a5fc76ed5f49d1ad0b7733b28320fc\",\"method\":\"CARD\",\"nickName\"\
+                    :\"홍길동카드\"}}"
+  /api/payment/request/easy/v1:
+    post:
+      tags:
+      - api
+      summary: 결제 요청
+      description: 결제 요청
+      operationId: payment/request/easy
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer AccessToken
+        required: true
+        schema:
+          type: string
+        example: Bearer YWJjZDoxMjM0
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api-payment-request-easy-v1-874717763'
+            examples:
+              payment/request/easy:
+                value: "{\"paymentId\":\"11f5230aaeef4faeb6fbc511377e8042\",\"mid\"\
+                  :\"7210c942fb534cacaa2553446da1d7ea\",\"amount\":1000000,\"taxFreeAmount\"\
+                  :0,\"orderId\":\"testOrder20240513_1\",\"orderName\":\"아이폰15 Pro\
+                  \ Max 512GB\",\"paymentMethodId\":\"fe4df140f30b4605bfea7b9d912a16cd\"\
+                  ,\"installmentMonth\":0,\"callbackUrl\":\"http://customer.co.kr/approval/v1\"\
+                  }"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-payment-request-easy-v1-1740024352'
+              examples:
+                payment/request/easy:
+                  value: "{\"code\":\"200\",\"message\":\"성공\",\"data\":{\"paymentId\"\
+                    :\"11f5230aaeef4faeb6fbc511377e8042\",\"customerDi\":\"3ed70a83292af51f87106ceca85eaaa2d8812f92a1c3e93166b3d52758da4431\"\
+                    ,\"paymentMethodId\":\"fe4df140f30b4605bfea7b9d912a16cd\",\"callbackUrl\"\
+                    :\"http://customer.co.kr/approval/v1\"}}"
+components:
+  schemas:
+    api-payment-request-easy-v1-874717763:
+      required:
+      - amount
+      - callbackUrl
+      - mid
+      - orderId
+      - orderName
+      - paymentId
+      - paymentMethodId
+      - taxFreeAmount
+      type: object
+      properties:
+        amount:
+          type: number
+          description: 결제금액
+        taxFreeAmount:
+          type: number
+          description: 비과세금액
+        orderId:
+          type: string
+          description: 주문번호
+        paymentMethodId:
+          type: string
+          description: 결제수단ID
+        paymentId:
+          type: string
+          description: 결제ID
+        mid:
+          type: string
+          description: 가맹점ID
+        callbackUrl:
+          type: string
+          description: 콜백URL
+        installmentMonth:
+          type: number
+          description: 할부개월수
+          nullable: true
+        orderName:
+          type: string
+          description: 구매상품명
+    api-payment-method-card-v11628057811:
+      required:
+      - code
+      - data
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: 응답코드
+        data:
+          required:
+          - id
+          - method
+          - nickName
+          type: object
+          properties:
+            method:
+              type: string
+              description: 결제수단종류
+            nickName:
+              type: string
+              description: 결제수단 별칭
+            id:
+              type: string
+              description: 결제수단ID
+          description: 등록 결제수단 정보
+        message:
+          type: string
+          description: 응답메세지
+    api-payment-request-easy-v1-1740024352:
+      required:
+      - code
+      - data
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: 응답코드
+        data:
+          required:
+          - callbackUrl
+          - customerDi
+          - paymentId
+          - paymentMethodId
+          type: object
+          properties:
+            customerDi:
+              type: string
+              description: 사용자DI
+            paymentMethodId:
+              type: string
+              description: 결제수단ID
+            paymentId:
+              type: string
+              description: 결제ID
+            callbackUrl:
+              type: string
+              description: 콜백URL
+          description: 응답결과
+        message:
+          type: string
+          description: 응답메세지
+    api-payment-ready-v11082296313:
+      required:
+      - amount
+      - mid
+      - orderId
+      - orderName
+      - taxFreeAmount
+      type: object
+      properties:
+        amount:
+          type: number
+          description: 결제금액
+        taxFreeAmount:
+          type: number
+          description: 비과세금액
+        orderId:
+          type: string
+          description: 주문번호
+        mid:
+          type: string
+          description: 가맹점ID
+        orderName:
+          type: string
+          description: 구매상품명
+    api-payment-ready-v11035276510:
+      required:
+      - code
+      - data
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: 응답코드
+        data:
+          required:
+          - accessToken
+          - customerDi
+          - paymentId
+          - paymentMethod
+          type: object
+          properties:
+            customerDi:
+              type: string
+              description: 사용자DI
+            paymentId:
+              type: string
+              description: 결제ID
+            paymentMethod:
+              type: array
+              description: 결제정보(등록간편결제)
+              items:
+                required:
+                - id
+                - method
+                - nickName
+                type: object
+                properties:
+                  method:
+                    type: string
+                    description: 결제수단종류
+                  nickName:
+                    type: string
+                    description: 결제수단 별칭
+                  id:
+                    type: string
+                    description: 결제수단ID
+            accessToken:
+              type: string
+              description: 액세스토큰
+          description: 응답결과
+        message:
+          type: string
+          description: 응답메세지
+    api-payment-method-card-v1-436592092:
+      required:
+      - cardHolderName
+      - cardNumber1
+      - cardNumber2
+      - cardNumber3
+      - cardNumber4
+      - cvc
+      - expireMonth
+      - expireYear
+      - nickName
+      - password
+      type: object
+      properties:
+        cvc:
+          type: number
+          description: 카드 CVC
+        password:
+          type: number
+          description: 비밀번호 앞 2글자
+        cardNumber4:
+          type: string
+          description: 카드 번호 네번째 4자리(암호화)
+        cardHolderName:
+          type: string
+          description: 카드 소유주 이름
+        expireMonth:
+          type: number
+          description: 카드 만료 월
+        cardNumber3:
+          type: string
+          description: 카드 번호 세번째 4자리(암호화)
+        nickName:
+          type: string
+          description: 결제수단 별칭
+        cardNumber2:
+          type: string
+          description: 카드 번호 두번째 4자리
+        cardNumber1:
+          type: string
+          description: 카드 번호 첫번째 4자리
+        expireYear:
+          type: number
+          description: 카드 만료 연도
+    api-test-hello486549215:
+      type: object
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
