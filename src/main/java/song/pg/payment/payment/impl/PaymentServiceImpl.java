@@ -70,7 +70,6 @@ public class PaymentServiceImpl implements PaymentService
      * 3. 리턴
      */
     CustomerEntity customer = customerRepository.findByCiAndMid(ci, requestPaymentReady.getMid());
-
     if (customer == null)
     {
       customer = new CustomerEntity(ci, requestPaymentReady.getMid());
@@ -78,7 +77,6 @@ public class PaymentServiceImpl implements PaymentService
     }
 
     Long count = paymentInfoRepository.countByStatusIsNotAndOrderIdAndMid("CANCEL", requestPaymentReady.getOrderId(), requestPaymentReady.getMid());
-
     if (count > 0)
     {
       throw new KnownException(ExceptionEnum.ALREADY_EXIST_PAYMENT);
@@ -88,7 +86,6 @@ public class PaymentServiceImpl implements PaymentService
       customer.getDi(),
       requestPaymentReady
     );
-
     paymentInfoRepository.save(paymentInfo);
 
     MethodFindAllV1.Response paymentMethodFindAllResponse = paymentMethodFindAllBlockingStub.findAllPaymentMethod(
@@ -142,13 +139,8 @@ public class PaymentServiceImpl implements PaymentService
      * 3. 결제 정보 업데이트
      * 4. 결제 요청
      */
-
-    PaymentInfoEntity paymentInfo = paymentInfoRepository.findByDiAndPaymentId(di, requestPaymentReady.getPaymentId());
-
-    if (paymentInfo == null)
-    {
-      throw new KnownException(ExceptionEnum.NOT_EXIST_PAYMENT);
-    }
+    PaymentInfoEntity paymentInfo = paymentInfoRepository.findByDiAndPaymentId(di, requestPaymentReady.getPaymentId())
+      .orElseThrow(() -> new KnownException(ExceptionEnum.NOT_EXIST_PAYMENT));
 
     if (!requestPaymentReady.validate(paymentInfo))
     {

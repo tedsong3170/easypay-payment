@@ -1,10 +1,10 @@
-package song.pg.payment.api.method.impl;
+package song.pg.payment.method.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
-import song.pg.payment.api.method.PaymentMethodService;
+import song.pg.payment.method.PaymentMethodService;
 import song.pg.payment.method.card.create.v1.proto.MethodCardCreateV1;
 import song.pg.payment.method.card.create.v1.proto.PaymentMethodCardCreateServiceGrpc;
 import song.pg.payment.models.common.CommonResponse;
@@ -27,6 +27,10 @@ public class PaymentMethodServiceImpl implements PaymentMethodService
     final RequestPaymentMethodCardRegister requestPaymentMethodCardRegister
   )
   {
+    /**
+     * 1. 카드등록 요청
+     * 2. 결과 반환
+     */
     MethodCardCreateV1.Response cardCreateResponse = paymentMethodCreateServiceBlockingStub.createCardInfo(
       MethodCardCreateV1.Request.newBuilder()
         .setDi(di)
@@ -52,7 +56,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService
 
     if (cardCreateResponse.getCode().equals("200"))
     {
-      return new CommonResponse<ResponsePaymentMethod>(
+      return new CommonResponse<>(
         "200",
         "성공",
         ResponsePaymentMethod.builder()
@@ -63,7 +67,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService
       );
     }
     else {
-      return new CommonResponse<ResponsePaymentMethod>(
+      return new CommonResponse<>(
         cardCreateResponse.getCode(),
         cardCreateResponse.getMessage(),
         null
