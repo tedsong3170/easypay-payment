@@ -8,15 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import song.pg.payment.utils.JwtUtil;
 import song.pg.payment.utils.KnownException;
 
 import java.io.IOException;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -31,20 +30,26 @@ public class JwtAuthFilter extends OncePerRequestFilter
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
   {
     log.debug("JWT 인증 필터 시작");
-    String authHeader = request.getHeader(AUTH_HEADER);
+    final String authHeader = request.getHeader(AUTH_HEADER);
 
     if (authHeader != null && authHeader.startsWith(BEARER))
     {
-      String token = authHeader.substring(BEARER.length());
-      Claims claims;
+      final String token = authHeader.substring(BEARER.length());
+      Claims claims = jwtUtil.getTokenClaims(token);
+
+      UserDetails userDetails = new CustomerUserDetails(
+        claims.get("di", String.class),
+        claims.get("mid", String.class)
+      );
 
       try
       {
-        claims = jwtUtil.getTokenClaims(token);
-        String di = claims.get("di", String.class);
-
         SecurityContextHolder.getContext().setAuthentication(
-          new UsernamePasswordAuthenticationToken(di, di, List.of(new SimpleGrantedAuthority("ACCESS_TOKEN")))
+          new UsernamePasswordAuthenticationToken(
+            userDetails,
+            userDetails,
+            userDetails.getAuthorities()
+          )
         );
       }
       catch (KnownException e)

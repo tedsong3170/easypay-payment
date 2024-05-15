@@ -1,4 +1,4 @@
-package song.pg.payment.controller.payment;
+package song.pg.payment.api.payment;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

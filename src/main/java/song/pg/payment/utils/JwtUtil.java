@@ -30,6 +30,7 @@ public class JwtUtil
   {
     Claims claims = Jwts.claims();
     claims.put("di", customerVo.getDi());
+    claims.put("mid", customerVo.getMid());
 
     return Jwts.builder()
       .setClaims(claims)

@@ -86,7 +86,7 @@ public class PaymentServiceImpl implements PaymentService
         paymentInfo.getDi(),
         jwtUtil.generate(new CustomerVo(customer)),
         paymentMethodFindAllResponse.getPaymentMethodList().stream().map(data -> {
-          PaymentMethodType method = null;
+          PaymentMethodType method;
 
           if (data.getMethod().equals("CARD"))
           {

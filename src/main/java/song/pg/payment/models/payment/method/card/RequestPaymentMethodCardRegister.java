@@ -10,7 +10,16 @@ import lombok.*;
 @ToString
 public class RequestPaymentMethodCardRegister {
   @NotBlank(message = "카드번호는 필수값입니다.")
-  private String cardNumber;
+  private String cardNumber1;
+
+  @NotBlank(message = "카드번호는 필수값입니다.")
+  private String cardNumber2;
+
+  @NotBlank(message = "카드번호는 필수값입니다.")
+  private String cardNumber3;
+
+  @NotBlank(message = "카드번호는 필수값입니다.")
+  private String cardNumber4;
 
   @NotNull(message = "만료년도는 필수값입니다.")
   private int expireYear;
@@ -26,4 +35,7 @@ public class RequestPaymentMethodCardRegister {
 
   @NotBlank(message = "카드소유자명은 필수값입니다.")
   private String cardHolderName;
+
+  @NotBlank(message = "별칭은 필수값입니다.")
+  private String nickName;
 }
